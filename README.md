@@ -1,5 +1,7 @@
 # Cephlo
 
+![Cephlo Logo](assets/logo.png)
+
 A TypeScript workflow management tool for composable task execution. Cephlo helps you build and manage complex workflows by breaking them down into smaller, reusable tasks.
 
 ## Features
