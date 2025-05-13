@@ -1,5 +1,5 @@
 import { Task, WorkflowContext } from '../../task';
-import { getWorkflowEngineConfig, WorkflowSpan } from '../../config';
+import { getWorkflowEngineConfig } from '../../config';
 import { CephloError } from '../../errors';
 import { Workflow, TaskExecutionContext, HookContext } from '../types';
 import { processTick } from './tick';

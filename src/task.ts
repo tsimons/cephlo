@@ -1,6 +1,6 @@
 type OutputOf<T extends Task<any, any>> = T extends Task<any, infer Output> ? Output : never;
 
-type OutputsOf<Tasks extends Task<any, any>[]> = {
+type OutputsOf<Tasks extends readonly Task<any, any>[]> = {
   [K in keyof Tasks]: Tasks[K] extends Task<any, any> ? OutputOf<Tasks[K]> : never;
 };
 
@@ -12,7 +12,7 @@ type OutputsOf<Tasks extends Task<any, any>[]> = {
  */
 export interface WorkflowContext {}
 
-export interface Task<Deps extends Task<any, any>[], TOutput = any> {
+export interface Task<Deps extends readonly Task<any, any>[], TOutput = any> {
   name: string;
   run: (input: OutputsOf<Deps>, context?: WorkflowContext) => Promise<TOutput>;
   deps?: Deps;
@@ -20,7 +20,7 @@ export interface Task<Deps extends Task<any, any>[], TOutput = any> {
   outputSchema?: unknown;
 }
 
-export function defineTask<Deps extends Task<any, unknown>[], Output = unknown>(
+export function defineTask<Deps extends readonly Task<any, unknown>[], Output = unknown>(
   options: Task<Deps, Output>
 ): Task<Deps, Output> {
   return {
