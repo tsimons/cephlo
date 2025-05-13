@@ -1,6 +1,10 @@
 # Cephlo
 
-![Cephlo Logo](assets/logo.png)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/logo-text--dark.png" alt="Cephlo logo">
+  <source media="(prefers-color-scheme: light)" srcset="assets/logo-text--light.png" alt="Cephlo logo">
+  <img alt="Cephlo logo" src="default-image.png">
+</picture>
 
 A TypeScript workflow management tool for composable task execution. Cephlo helps you build and manage complex workflows by breaking them down into smaller, reusable tasks.
 
