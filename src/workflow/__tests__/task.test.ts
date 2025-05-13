@@ -2,13 +2,13 @@ import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { Task } from '../../task';
 import { executeTask } from '../execution/task';
 import { TaskExecutionContext } from '../types';
-import { configureWorkflowEngine } from '../../config';
+import { configureWorkflowEngine, WorkflowLogger, WorkflowValidator } from '../../config';
 
 describe('Task Execution', () => {
   let mockTask: Task<any, any>;
   let mockContext: TaskExecutionContext<any>;
-  let mockLogger: any;
-  let mockValidator: any;
+  let mockLogger: WorkflowLogger;
+  let mockValidator: WorkflowValidator;
 
   beforeEach(() => {
     // Reset mocks
@@ -47,6 +47,7 @@ describe('Task Execution', () => {
 
     // Mock logger and validator
     mockLogger = {
+      log: vi.fn(),
       info: vi.fn(),
       debug: vi.fn(),
       error: vi.fn(),

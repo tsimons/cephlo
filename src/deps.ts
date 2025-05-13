@@ -1,5 +1,5 @@
 import { Task } from './task';
 
-export function deps<Tasks extends Task<any, any>[]>(...tasks: Tasks): readonly [...Tasks] {
+export function deps<Tasks extends Task<unknown, unknown>[]>(...tasks: Tasks): readonly [...Tasks] {
   return tasks;
 }

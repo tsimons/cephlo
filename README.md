@@ -46,7 +46,7 @@ const fetchData = defineTask({
 
 const processData = defineTask({
   name: 'processData',
-  run: async (data: any) => {
+  run: async (data: unknown) => {
     // Process the data
     return { processed: true, ...data };
   },
@@ -85,7 +85,7 @@ Tasks are the building blocks of workflows. Each task can:
 ```typescript
 const task = defineTask({
   name: 'myTask',
-  run: async (input: any, context?: WorkflowContext) => {
+  run: async (input: unknown, context?: WorkflowContext) => {
     // Task implementation
     return result;
   },
