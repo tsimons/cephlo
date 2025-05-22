@@ -12,9 +12,9 @@ A TypeScript workflow management tool for composable task execution. Cephlo help
 
 - 🧩 Composable task-based workflows
 - 🔄 Automatic retry handling
-- 🎯 Input and output validation
-- 📊 Built-in logging and tracing
-- 🎭 Customizable hooks for workflow events
+- 🎯 Input and output validation, BYO framework
+- 📊 Pluggable logging and tracing
+- 🎭 Hooks for workflow events
 - ⚡ Parallel task execution
 - 🛡️ Type-safe task definitions
 
@@ -36,23 +36,31 @@ import { defineTask, createWorkflow, runWorkflow } from 'cephlo';
 // Define tasks
 const fetchData = defineTask({
   name: 'fetchData',
-  run: async (input: string) => {
-    const response = await fetch(input);
+  run: async (apiUrl: string): Promise<{ foo: string }> => {
+    const response = await fetch(apiUrl);
     return response.json();
   },
-  inputSchema: { type: 'string' },
-  outputSchema: { type: 'object' },
+  inputSchema: z.string(),
+  outputSchema: z.object({
+    foo: z.string(),
+  }),
 });
 
 const processData = defineTask({
   name: 'processData',
-  run: async (data: unknown) => {
+  // return types from dependent tasks map to run arguments
+  run: async ([fetchDataResponse]) => {
     // Process the data
-    return { processed: true, ...data };
+    return { processed: true, foo: fetchDataResponse.foo };
   },
-  deps: [fetchData],
-  inputSchema: { type: 'object' },
-  outputSchema: { type: 'object' },
+  deps: [fetchData] as const,
+  // typebox example
+  outputSchema: ajv.compile(
+    Type.Object({
+      processed: Type.Boolean(),
+      foo: Type.String(),
+    })
+  ),
 });
 
 // Create a workflow
@@ -80,6 +88,7 @@ Tasks are the building blocks of workflows. Each task can:
 - Return outputs
 - Depend on other tasks
 - Define input and output schemas
+  - Input schema only runs when the task has no deps
 - Handle errors
 
 ```typescript
@@ -93,10 +102,10 @@ const task = defineTask({
     /* dependent tasks */
   ],
   inputSchema: {
-    /* JSON Schema */
+    /* Your favorite schema flavor */
   },
   outputSchema: {
-    /* JSON Schema */
+    /* Your favorite schema flavor */
   },
 });
 ```
@@ -120,15 +129,17 @@ configureWorkflowEngine({
     error: console.error,
     warn: console.warn,
   },
-  validator: {
-    validate: (data, schema) => {
-      // Custom validation logic
-      return true;
-    },
-    sanitize: (data, schema) => {
-      // Custom sanitization logic
-      return data;
-    },
+  validate: (data, schema) => {
+    // zod
+    const result = schema.safeParse(data);
+    if (!result.success) throw new Error('Validation failed');
+    return result.data; // Already validated + sanitized
+
+    // typebox
+    // ajv.compile called as schema definition
+    const validateFn = schema;
+    if (!validateFn(data)) throw new Error('Validation failed');
+    return data; // stripped and validated
   },
 });
 ```
