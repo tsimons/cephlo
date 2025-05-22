@@ -1,15 +1,15 @@
 import { Task, WorkflowContext } from '../../task';
 import { WorkflowSpan } from '../../config';
 
-export interface HookContext<T extends Task<unknown, unknown>[]> {
+export interface HookContext<T extends Task<any, any>[]> {
   workflow: Workflow<T>;
-  task?: Task<unknown, unknown>;
+  task?: Task<any, any>;
   inputs: unknown | undefined;
   output: unknown | undefined;
   attempts: number | undefined;
 }
 
-export interface WorkflowHooks<T extends Task<unknown, unknown>[]> {
+export interface WorkflowHooks<T extends Task<any, any>[]> {
   onWorkflowStart?: (context: HookContext<T>) => void;
   onWorkflowEnd?: (context: HookContext<T>) => void;
   onWorkflowError?: (error: unknown, context: HookContext<T>) => void;
@@ -28,19 +28,19 @@ export interface WorkflowHooks<T extends Task<unknown, unknown>[]> {
   onTaskRetry?: (context: HookContext<T>) => void;
 }
 
-export interface Workflow<T extends Task<unknown, unknown>[]> {
+export interface Workflow<T extends Task<any, any>[]> {
   name: string;
-  uniqueTasks: Map<keyof T[number]['name'], Task<unknown, unknown>>;
+  uniqueTasks: Map<keyof T[number]['name'], Task<any, any>>;
   hooks?: WorkflowHooks<T>;
 }
 
-export interface TaskExecutionContext<T extends Task<unknown, unknown>[]> {
+export interface TaskExecutionContext<T extends Task<any, any>[]> {
   workflow: Workflow<T>;
   outputs: Map<string, unknown>;
   attempts: Map<string, number>;
   initialData: unknown;
   context?: WorkflowContext;
-  uniqueTasks: Map<keyof T[number]['name'], Task<unknown, unknown>>;
+  uniqueTasks: Map<keyof T[number]['name'], Task<any, any>>;
 }
 
 export interface TaskExecutionResult {

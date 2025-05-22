@@ -3,8 +3,8 @@ import { CephloError, ERROR_CODES, UNRETRYABLE_ERROR_CODES } from '../../errors'
 import { getWorkflowEngineConfig, WorkflowSpan } from '../../config';
 import { TaskExecutionContext, TaskExecutionResult, HookContext } from '../types';
 
-export async function executeTask<T extends Task<unknown, unknown>[]>(
-  task: Task<unknown, unknown>,
+export async function executeTask<T extends Task<any, any>[]>(
+  task: Task<any, any>,
   ctx: TaskExecutionContext<T>,
   taskSpan?: WorkflowSpan
 ): Promise<TaskExecutionResult> {
@@ -25,7 +25,7 @@ export async function executeTask<T extends Task<unknown, unknown>[]>(
     attempts.set(task.name, attempt + 1);
 
     const inputs = task.deps?.length
-      ? task.deps.map((dep: Task<unknown, unknown>) => outputs.get(dep.name))
+      ? task.deps.map((dep: Task<any, any>) => outputs.get(dep.name))
       : initialData;
 
     logger?.debug(`Task ${task.name} attempt ${attempt + 1}/${retryPolicy.maxAttempts}`);

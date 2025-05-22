@@ -87,6 +87,7 @@ export async function runWorkflow<T extends Task<any, any>[]>(
         tickCount,
         status: 'failed',
         duration: Date.now() - startTime,
+        error: err,
       };
     }
     tickCount++;

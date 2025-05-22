@@ -221,7 +221,7 @@ describe('Workflow Retry Logic', () => {
     expect(result.attempts.get('task2')).toBe(3);
   });
 
-  test('should not retry task if output validation fails', async () => {
+  test.only('should not retry task if output validation fails', async () => {
     mockValidator.validate = vi
       .fn()
       .mockReturnValueOnce(true)

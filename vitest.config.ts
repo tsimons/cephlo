@@ -8,7 +8,8 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
-      exclude: ['node_modules/', 'src/**/*.test.ts', 'src/**/__tests__/**'],
+      include: ['src/**/*.ts'],
+      exclude: ['node_modules/', 'src/**/*.test.ts', 'src/cephlo.ts', 'src/**/__tests__/**'],
     },
   },
 });

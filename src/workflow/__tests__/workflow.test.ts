@@ -4,9 +4,9 @@ import { createWorkflow, runWorkflow } from '../index';
 import { configureWorkflowEngine, WorkflowLogger } from '../../config';
 
 describe('Workflow Execution', () => {
-  let task1: Task<unknown, unknown>;
-  let task2: Task<unknown, unknown>;
-  let task3: Task<unknown, unknown>;
+  let task1: Task<any, any>;
+  let task2: Task<any, any>;
+  let task3: Task<any, any>;
   let mockLogger: WorkflowLogger;
   beforeEach(() => {
     vi.resetAllMocks();
